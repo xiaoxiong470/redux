@@ -4,31 +4,41 @@ import {showUsers} from "../actions";
 
 class Users extends React.Component{
     componentDidMount() {
-      //this.props.showUsers();
+      this.props.showUsers();
     }
     render(){
-       let users= this.props.users;
-       if(users){
+       let {users,loading,error}= this.props;
+       //console.log("props",this.props);
+       if(loading==true){
            return (
                <div>
-                   loading:{this.props.loading+""}
-                   {users.map((v,index)=>{
-                       return <li key={index}>{v.name}:{v.age}</li>
-                   })}
-               </div>
-           )
+                   {/*加上字符串可以显示*/}
+                   loading:{loading+""}
+               </div>)
+       }else{
+           //console.log("users", users);
+           if(users){
+               return (
+                   <div>
+                       {users.map((v,index)=>{
+                           return <li key={index}>{v.name}:{v.age}</li>
+                       })}
+                   </div>
+               )
+           }else{
+               return (<div>{error}</div>)
+           }
+
        }
        return (<div>null</div>);
    }
 }
 function mapStateToProps(state,props){
-    console.log("state",state);
-    console.log("props",props);
-  return props;
+    let newProps={...state.payLoad};
+  return newProps;
 }
 
 function mapDispatchToProps(dispatch,props){
-    console.log("mapDispatchToProps",dispatch);
   return {
       showUsers:()=>{dispatch(showUsers())}
   }
