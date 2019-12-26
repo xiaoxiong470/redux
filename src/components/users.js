@@ -3,44 +3,57 @@ import {connect} from "react-redux";
 import {showUsers} from "../actions";
 
 class Users extends React.Component{
-    componentDidMount() {
-      this.props.showUsers();
+    constructor(props){
+        super(props);
+        //this.props.loading();
     }
-    render(){
-       let {users,loading,error}= this.props;
-       //console.log("props",this.props);
-       if(loading==true){
-           return (
-               <div>
-                   {/*加上字符串可以显示*/}
-                   loading:{loading+""}
-               </div>)
-       }else{
-           //console.log("users", users);
-           if(users){
-               return (
-                   <div>
-                       {users.map((v,index)=>{
-                           return <li key={index}>{v.name}:{v.age}</li>
-                       })}
-                   </div>
-               )
-           }else{
-               return (<div>{error}</div>)
-           }
+    componentDidMount() {
 
-       }
-       return (<div>null</div>);
+        this.props.showUsers();
+
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+
+    }
+
+    render(){
+        const {payload,loading,error}= this.props;
+        let users=[];
+        if(loading==false){
+            if(payload.length>0){
+                return (
+                    <div>
+                        {payload.map((v,index)=>{
+                            return <li key={index}>{v.name}:{v.age}</li>
+                        })}
+                    </div>
+                )
+            }else{
+                return (<div>{error}</div>)
+            }
+        }else{
+
+            return (
+                <div>
+                    {/*加上字符串可以显示*/}
+                    loading:加载中
+                </div>)
+        }
+
    }
 }
 function mapStateToProps(state,props){
-    let newProps={...state.payLoad};
+    let newProps={...state};
+   //console.log("newProps",newProps);
   return newProps;
 }
 
 function mapDispatchToProps(dispatch,props){
   return {
-      showUsers:()=>{dispatch(showUsers())}
+      showUsers:()=>{
+         dispatch(showUsers());//promise
+      }
   }
 }
 

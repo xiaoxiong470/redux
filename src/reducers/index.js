@@ -1,19 +1,35 @@
-export default function handleActions(state={loading:true,payLoad:{}},action={}){
-    //console.log("action",action);
+export default function handleActions(state={},action={}){
+   // console.log("action",action);
     switch(action.type){
         case "LIST_USERS_lOADING":
            return {
                ...state,
-               payLoad:{loading:true}};
+               ...action
+           }
         case "LIST_USERS_SUCCESS":
             return {
                 ...state,
-                payLoad:{users:action.users,loading:false}
+                ...action
             };
         case "LIST_USERS_ERROR":
             return {
                 ...state,
-                payLoad:{error:action.error,loading:false}
+                ...action
+            };
+        case "ROLLING_lOADING":
+            return {
+                ...state,
+                ...action
+            }
+        case "ROLLING_SUCCESS":
+            return {
+                ...state,
+                ...action
+            };
+        case "ROLLING_ERROR":
+            return {
+                ...state,
+                ...action
             };
         default:
             return state;
